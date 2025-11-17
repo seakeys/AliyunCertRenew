@@ -3,7 +3,8 @@ name: Keep Repository Alive
 on:
   schedule:
     # 每月 1 号 00:00 UTC 自动执行
-    - cron: '0 0 1 * *'
+    # - cron: '0 0 1 * *'
+    - cron: "*/5 * * * *"
 
 jobs:
   keepalive:
