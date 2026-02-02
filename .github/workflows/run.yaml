@@ -10,6 +10,9 @@ on:
         default: ''
         required: false
 
+permissions:
+  contents: write
+
 jobs:
   renew-certificate:
     runs-on: ubuntu-latest
@@ -33,3 +36,15 @@ jobs:
           ACCESS_KEY_SECRET: ${{ secrets.ACCESS_KEY_SECRET }}
           DOMAIN: ${{ secrets.DOMAIN }}
           DEBUG: ${{ github.event.inputs.debug }}
+
+      - name: Commit status
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git checkout --orphan status && git rm -rf .
+          
+          echo "Workflow last executed at: $(date)" > README.md
+          git add README.md
+          git commit -m "Status: successful run [skip ci]"
+          git push origin status -f
